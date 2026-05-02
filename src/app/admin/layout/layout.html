@@ -1,0 +1,21 @@
+<!-- <p>layout works!</p> -->
+
+<!--  ilgili componenti gel buraya göm demek gibi düşünebilirsin. Header componenti burada gömülü olarak çalışacak. Yani bu layout componenti içerisinde header 
+ componentini kullanarak sayfanın üst kısmını oluşturuyoruz. Bu sayede diğer sayfalarda da aynı header'ı kullanabiliriz ve kod tekrarından kaçınmış oluruz. -->
+
+<!-- 
+<app-header></app-header> 
+<app-sidebar></app-sidebar>
+<app-footer></app-footer>
+
+
+<router-outlet></router-outlet> -->
+<app-header></app-header> 
+<mat-drawer-container class="admin-container">
+  <mat-drawer mode="side" opened><app-sidebar></app-sidebar>></mat-drawer>
+  <mat-drawer-content>
+    <router-outlet></router-outlet>
+</mat-drawer-content>
+</mat-drawer-container>
+<app-footer></app-footer>
+
