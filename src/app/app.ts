@@ -15,34 +15,34 @@ declare var $: any
 export class App implements OnInit {
   protected readonly title = signal('ETicaretClient');
   constructor(private customToastr: CustomToastr,@Inject(PLATFORM_ID) private platformId: Object) {
-    customToastr.message("Başarılı","Başlık",{
-      messageType:ToastrMessageType.Success,
-      position:ToastrPosition.TopRight 
-    });
-    customToastr.message("Başarılı","Başlık",{
-      messageType:ToastrMessageType.Info,
-      position:ToastrPosition.TopLeft
-    });
-    customToastr.message("Başarılı","Başlık",{
-      messageType:ToastrMessageType.Error,
-      position:ToastrPosition.TopCenter
-    });
-    customToastr.message("Başarılı","Başlık",{
-      messageType:ToastrMessageType.Warning,
-      position:ToastrPosition.BottomRight
-    });
+
+    // customToastr.message("Başarılı","Başlık",{
+    //   messageType:ToastrMessageType.Info,
+    //   position:ToastrPosition.TopLeft
+    // });
+    // customToastr.message("Başarılı","Başlık",{
+    //   messageType:ToastrMessageType.Error,
+    //   position:ToastrPosition.BottomLeft
+    // });
+    // customToastr.message("Başarılı","Başlık",{
+    //   messageType:ToastrMessageType.Warning,
+    //   position:ToastrPosition.BottomRight
+    // });
 
   }
 
-  
-
   ngOnInit() {
-    // Sadece tarayıcı ortamında çalışmasını sağla
-    if (isPlatformBrowser(this.platformId)) {
-      $(document).ready(() => {
-        //alert("Jquery çalışıyor");
+    //  Sadece tarayıcı ortamında çalışmasını sağla
+    // if (isPlatformBrowser(this.platformId)) {
+    //   $(document).ready(() => {
+    //   alert("Jquery çalışıyor");
+    //   });
+    
+   if (isPlatformBrowser(this.platformId)) {
+      this.customToastr.message("Başarılı", "Başlık", {
+        messageType: ToastrMessageType.Success,
+        position: ToastrPosition.BottomLeft
       });
-      
-}
+    }
 }
 }

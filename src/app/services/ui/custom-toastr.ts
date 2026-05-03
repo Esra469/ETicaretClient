@@ -1,17 +1,21 @@
 //servis olarak kullanmak için oluşturduk
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CustomToastr {
-  constructor(private toastr: ToastrService) {}
+  constructor(private toastr: ToastrService,@Inject(PLATFORM_ID) private platformId: Object) {}
 
   message(message: string,title:string,ToastrOptions: Partial<ToastrOptions>) {
-      this.toastr[ToastrOptions.messageType](message,title,{
-        positionClass:ToastrOptions.position
+    
+     if (isPlatformBrowser(this.platformId)) {
+      this.toastr[ToastrOptions.messageType](message, title, {
+        positionClass: ToastrOptions.position
       });
+    }
   } 
 }
 
