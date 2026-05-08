@@ -3,7 +3,7 @@ import { Base, SpinnerType } from '../../../base/base';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { OnInit } from '@angular/core';
 import { HttpClient } from '../../../services/common/http-client';
-import { Product } from '../../../contracts/product';
+import { Create_Product } from '../../../contracts/create_product';
 
 @Component({
   selector: 'app-products',
@@ -21,17 +21,17 @@ export class Products extends Base implements OnInit {
 
 
 
-    this.httpClient.get<Product[]>({
-      controller: "products",
-    }).subscribe(data=>{});
+    // this.httpClient.get<Product[]>({
+    //   controller: "products",
+    // }).subscribe(data=>{});
 
-    this.httpClient.post<Product>({
-      controller:"products"
-    },{
-      name:"Kalem",
-      stock:100,
-      price:10,
-    }).subscribe();
+    // this.httpClient.post<Product>({
+    //   controller:"products"
+    // },{
+    //   name:"Kalem",
+    //   stock:100,
+    //   price:10,
+    // }).subscribe();
 
     // this.httpClient.post({
     //   controller:"products"
@@ -67,9 +67,9 @@ export class Products extends Base implements OnInit {
     //   price:12,
     // orders: []}).subscribe();
 
-    this.httpClient.delete({
-      controller:"products"},
-      "35de8ad3-726e-4c43-8b8d-d399cd8cc603").subscribe();
+    // this.httpClient.delete({
+    //   controller:"products"},
+    //   "35de8ad3-726e-4c43-8b8d-d399cd8cc603").subscribe();
 
     }
   
