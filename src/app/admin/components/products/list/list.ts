@@ -9,8 +9,9 @@ import { Base, SpinnerType } from '../../../../base/base';
 import { error } from 'console';
 import { ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-import { AfterViewInit } from '@angular/core';
-import { get } from 'http';
+
+
+declare  var $:any;
 
 @Component({
   selector: 'app-list',
@@ -24,7 +25,7 @@ export class List extends Base implements OnInit {
   }
   
 
- displayedColumns: string[] = ['name', 'stock', 'updatedate', 'price', 'createdate'];
+ displayedColumns: string[] = ['name', 'stock', 'updatedate', 'price', 'createdate', 'edit','delete'];
  dataSource :MatTableDataSource<List_Product>=null;//veriler daha gelmedi null olabilr.
  @ViewChild(MatPaginator) paginator!: MatPaginator;
  
@@ -43,12 +44,17 @@ this.showSpinner(SpinnerType.BallAtom);
 }
 
 //istediğimiz aralıktaki veriler geldi. veriler bir anda hepsi gelemedi pagination sayfası ona göre optimize edildi.
-async pageChanged(){
- await this.getProducts();
-}
+  async pageChanged(){
+  await this.getProducts();
+  }
 
   async ngOnInit() {
     await this.getProducts();
   }
+
+  // delete(id,event){
+  //   const img:HTMLImageElement=event.srcElement;
+  //   $(img.parentElement.parentElement).fadeOut(2000);
+  // }
 
 }

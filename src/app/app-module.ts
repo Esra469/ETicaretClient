@@ -14,6 +14,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Base } from './base/base';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { Delete } from './directives/admin/delete';
 
 @NgModule({
   declarations: [App],
@@ -25,15 +26,13 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     UiModule,
     ToastrModule.forRoot(),
     NgxSpinnerModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),
-     provideClientHydration(withEventReplay()),
-     {provide: "baseUrl",useValue: "https://localhost:7213",multi: true}//normlade servisete get ksıımında tanımlardık ama değişeeği için temel bir yere koyduk.
-    
+    provideClientHydration(withEventReplay()),
+    { provide: 'baseUrl', useValue: 'https://localhost:7213', multi: true }, //normlade servisete get ksıımında tanımlardık ama değişeeği için temel bir yere koyduk.
   ],
-
 
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [App],
