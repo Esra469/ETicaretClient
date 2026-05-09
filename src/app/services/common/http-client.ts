@@ -2,6 +2,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient as AngularHttpClient, HttpHeaders } from '@angular/common/http'; 
 import { Observable } from 'rxjs';
+import { request } from 'http';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +23,7 @@ export class HttpClient {
   if(requestParameter.fullEndPoint)
     Targeturl=requestParameter.fullEndPoint;
   else
-      Targeturl=`${this.Createurl(requestParameter)}${id ? `/${id}` : ""}`;
+    Targeturl = `${this.Createurl(requestParameter)}${id ? `/${id}` : ""}${requestParameter.queryString ? `?${requestParameter.queryString}` : ""}`;
   return this.http.get<T>(Targeturl,{headers:requestParameter.headers});
   }
 
@@ -31,7 +32,7 @@ export class HttpClient {
     if(requestParameter.fullEndPoint)
       targetUrl=requestParameter.fullEndPoint;
     else
-      targetUrl=`${this.Createurl(requestParameter)}`;
+      targetUrl=`${this.Createurl(requestParameter)}${requestParameter.queryString? `?${requestParameter.queryString}`:""} `;
 
     return this.http.post<T>(targetUrl,body,{headers:requestParameter.headers});
   }
@@ -40,7 +41,7 @@ export class HttpClient {
     if(requestParameter.fullEndPoint)
       targetUrl=requestParameter.fullEndPoint;
     else
-      targetUrl=`${this.Createurl(requestParameter)}`;
+      targetUrl=`${this.Createurl(requestParameter)}${requestParameter.queryString? `?${requestParameter.queryString}`:""}`;
 
     return this.http.put<T>(targetUrl,body,{headers:requestParameter.headers});
   }
@@ -52,7 +53,7 @@ export class HttpClient {
     if(requestParameter.fullEndPoint)
       targetUrl=requestParameter.fullEndPoint;
     else
-      targetUrl=`${this.Createurl(requestParameter)}/${id}`;
+      targetUrl=`${this.Createurl(requestParameter)}/${id}${requestParameter.queryString? `?${requestParameter.queryString}`:""}`;
 
     return this.http.delete<T>(targetUrl,{headers:requestParameter.headers});
   }
@@ -61,6 +62,8 @@ export class HttpClient {
 export class RequestParameters {
   controller?: string;
   action?:string;
+  queryString?: string;
+
   headers?: HttpHeaders;
   baseUrl?: string;
   fullEndPoint?: string;
