@@ -15,6 +15,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Base } from './base/base';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Delete } from './directives/admin/delete';
+import { DeleteDialog } from './dialogs/delete-dialog/delete-dialog';
 
 @NgModule({
   declarations: [App],

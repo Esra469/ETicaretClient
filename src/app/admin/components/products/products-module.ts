@@ -11,9 +11,11 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { Delete } from '../../../directives/admin/delete';
+import {MatDialogModule} from '@angular/material/dialog';
+import { DeleteDialog } from '../../../dialogs/delete-dialog/delete-dialog';
 
 @NgModule({
-  declarations: [Products, Create, List,Delete],
+  declarations: [Products, Create, List,Delete,DeleteDialog],
   imports: [
     CommonModule,
     RouterModule.forChild([
@@ -24,7 +26,9 @@ import { Delete } from '../../../directives/admin/delete';
     MatInputModule,
     MatButtonModule,
     MatTableModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatDialogModule,
+    
   ],
 })
 export class ProductsModule {}
