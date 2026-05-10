@@ -6,6 +6,7 @@ import { NgxSpinner, NgxSpinnerService } from 'ngx-spinner';
 import { Base, SpinnerType } from '../../../../base/base';
 import { Alertify, MessageType, Position } from '../../../../services/admin/alertify';
 import { error } from 'console';
+import { FileUploadOptions } from '../../../../services/common/file-upload/file-upload';
 
 
 
@@ -26,6 +27,14 @@ export class Create extends Base implements OnInit {
 }
 
 @Output() createdProduct:EventEmitter<Create_Product>=new EventEmitter();
+@Output() FileUploadOptions:Partial<FileUploadOptions>={//OUTPUT olarak işaretledik çünkü bu vermiş olduğumuz dışarıya gidecek
+  action:"upload",
+  controller:"products",
+  explanation:"Resimleri sürükleyn veya seçin",
+  isAdminPage:true,
+  accept:".png, .jpg"
+
+} ;
 
 create (name:HTMLInputElement, stock:HTMLInputElement, price:HTMLInputElement) {
 
