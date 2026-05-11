@@ -17,6 +17,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Delete } from './directives/admin/delete';
 import { DeleteDialog } from './dialogs/delete-dialog/delete-dialog';
 import { FileUpload } from './services/common/file-upload/file-upload';
+import { FileUploadDialog } from './dialogs/file-upload-dialog/file-upload-dialog';
 
 @NgModule({
   declarations: [App],

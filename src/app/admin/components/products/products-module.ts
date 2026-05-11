@@ -14,9 +14,10 @@ import { Delete } from '../../../directives/admin/delete';
 import {MatDialogModule} from '@angular/material/dialog';
 import { DeleteDialog } from '../../../dialogs/delete-dialog/delete-dialog';
 import { FileUploadModule } from '../../../services/common/file-upload/file-upload-module';
+import { DialogModule } from '../../../dialogs/dialog-module';
 
 @NgModule({
-  declarations: [Products, Create, List,Delete,DeleteDialog],
+  declarations: [Products, Create, List,Delete],
   imports: [
     CommonModule,
     RouterModule.forChild([
@@ -28,7 +29,7 @@ import { FileUploadModule } from '../../../services/common/file-upload/file-uplo
     MatButtonModule,
     MatTableModule,
     MatPaginatorModule,
-    MatDialogModule,
+    DialogModule,
     FileUploadModule
     
   ],

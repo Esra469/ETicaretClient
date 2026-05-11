@@ -1,85 +1,115 @@
-import { Component,Input } from '@angular/core';
-import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry } from 'ngx-file-drop';
-import { HttpClient } from '../http-client';
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { subscribe } from 'diagnostics_channel';
+import { Component, Input, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { FileSystemDirectoryEntry, FileSystemFileEntry, NgxFileDropEntry } from 'ngx-file-drop';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { SpinnerType } from '../../../base/base';
+import { FileUploadDialog, FileUploadDialogState } from '../../../dialogs/file-upload-dialog/file-upload-dialog';
 import { Alertify, MessageType, Position } from '../../admin/alertify';
 import { CustomToastr, ToastrMessageType, ToastrPosition } from '../../ui/custom-toastr';
+import { Dialog } from '../dialog';
+import { HttpClient } from '../http-client';
 
 @Component({
   selector: 'app-file-upload',
-  standalone: false,
   templateUrl: './file-upload.html',
-  styleUrl: './file-upload.scss',
+  styleUrls: ['./file-upload.scss'],
+  standalone: false
 })
-export class FileUpload { 
-  constructor(private httpClientService:HttpClient,
-    private alertifyService:Alertify,
-    private customService:CustomToastr){}//bunun sayesinde istek göndereceğiz
+export class FileUpload {
+  constructor(
+    private httpClientService: HttpClient,
+    private alertifyService: Alertify,
+    private customToastrService: CustomToastr,
+    private dialog: MatDialog,
+    private dialogService: Dialog,
+    private spinner: NgxSpinnerService) { }
 
-  public files: NgxFileDropEntry[] = [];
+  public files: NgxFileDropEntry[];
 
-  @Input() options:Partial<FileUploadOptions>;
+  @Input() options: Partial<FileUploadOptions>;
 
   public selectedFiles(files: NgxFileDropEntry[]) {
     this.files = files;
-    const fileData:FormData=new FormData();
-    for(const file of files){
-      (file.fileEntry as FileSystemFileEntry).file((_file:File)=>{
-        fileData.append(_file.name,_file,file.relativePath);
+    const fileData: FormData = new FormData();
+    for (const file of files) {
+      (file.fileEntry as FileSystemFileEntry).file((_file: File) => {
+        fileData.append(_file.name, _file, file.relativePath);
       });
     }
+    this.dialogService.openDialog({
+      componentType: FileUploadDialog,
+      data: FileUploadDialogState.Yes,
+      afterClosed: () => {
+        this.spinner.show(SpinnerType.BallAtom)
+        this.httpClientService.post({
+          controller: this.options.controller,
+          action: this.options.action,
+          queryString: this.options.queryString,
+          headers: new HttpHeaders({ "responseType": "blob" })
+        }, fileData).subscribe(data => {
 
-    //bu yapının body ve istek(subscribe kısımlarını iyi incele)
- this.httpClientService.post({
-  controller:this.options.controller,
-  action:this.options.action,
-  queryString:this.options.queryString,
-  headers:new HttpHeaders({"responseType":"blob"})
- },fileData).subscribe(data=>{
+          const message: string = "Dosyalar başarıyla yüklenmiştir.";
 
-  const message:string="Dosyalar Başarıyla Yüklenmiştir."
-  if(this.options.isAdminPage){
-      this.alertifyService.message(message,{
-        dismissOthers:true,
-        messageType:MessageType.Success,
-        position:Position.TopRight
-      })
-  }else{
-      this.customService.message(message,"Başarılı",{
-          messageType:ToastrMessageType.Success,
-          position:ToastrPosition.TopRight
-      })
+          this.spinner.hide(SpinnerType.BallAtom);
+          if (this.options.isAdminPage) {
+            this.alertifyService.message(message,
+              {
+                dismissOthers: true,
+                messageType: MessageType.Success,
+                position: Position.TopRight
+              })
+          } else {
+            this.customToastrService.message(message, "Başarılı.", {
+              messageType: ToastrMessageType.Success,
+              position: ToastrPosition.TopRight
+            })
+          }
+
+
+        }, (errorResponse: HttpErrorResponse) => {
+
+          const message: string = "Dosyalar yüklenirken beklenmeyen bir hatayla karşılaşılmıştır.";
+
+          this.spinner.hide(SpinnerType.BallAtom)
+          if (this.options.isAdminPage) {
+            this.alertifyService.message(message,
+              {
+                dismissOthers: true,
+                messageType: MessageType.Error,
+                position: Position.TopRight
+              })
+          } else {
+            this.customToastrService.message(message, "Başarsız.", {
+              messageType: ToastrMessageType.Error,
+              position: ToastrPosition.TopRight
+            })
+          }
+
+        });
+      }
+    });
   }
 
- },(errorResponse:HttpErrorResponse)=>{
+  //openDialog(afterClosed: any): void {
+  //  const dialogRef = this.dialog.open(FileUploadDialogComponent, {
+  //    width: '250px',
+  //    data: FileUploadDialogState.Yes,
+  //  });
 
-const message:string="Dosyalar Yüklenirlen Beklenmedik Bir Hata ile Karşılaşıldı."
-  if(this.options.isAdminPage){
-      this.alertifyService.message(message,{
-        dismissOthers:true,
-        messageType:MessageType.Error,
-        position:Position.TopRight
-      })
-  }else{
-      this.customService.message(message,"Başarısız",{
-          messageType:ToastrMessageType.Error,
-          position:ToastrPosition.TopRight
-      })
-  }
+  //  dialogRef.afterClosed().subscribe(result => {
+  //    if (result == FileUploadDialogState.Yes)
+  //      afterClosed();
+  //  });
+  //}
 
- });  
-  }
-} 
+}
 
-
-
-//Bu component neye göre çalışacaksa alınna verya gönderilen verilerin yapısını belirleyecek
-export class FileUploadOptions{
-  controller?:string;
-  action?:string;
-  queryString?:string;
-  explanation?:string;
-  accept?:string;
-  isAdminPage?:boolean=false;
+export class FileUploadOptions {
+  controller?: string;
+  action?: string;
+  queryString?: string;
+  explanation?: string;
+  accept?: string;
+  isAdminPage?: boolean = false;
 }
